@@ -7,11 +7,7 @@ import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 import thirdparty.paymentgateway.TicketPaymentService;
 import thirdparty.seatbooking.SeatReservationService;
 
-
 public class TicketServiceImpl implements TicketService {
-    /**
-     * Should only have private methods other than the one below.
-     */
 
     private final TicketPaymentService paymentService;
     private final SeatReservationService reservationService;
@@ -52,7 +48,7 @@ public class TicketServiceImpl implements TicketService {
         }
 
         if((childCount > 0 || infantCount > 0 ) && adultCount == 0){
-            throw new InvalidPurchaseException("Chiild/Infant tickets can not be purchased without an Adult ticket");
+            throw new InvalidPurchaseException("Child/Infant tickets can not be purchased without an Adult ticket");
         }
     }
 

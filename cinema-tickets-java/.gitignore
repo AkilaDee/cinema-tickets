@@ -1,0 +1,41 @@
+# Maven target directory
+/target/
+
+# Eclipse IDE files
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA files
+.idea/
+*.iml
+*.iws
+
+# NetBeans IDE files
+/nbproject/private/
+/build/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code files
+.vscode/
+
+# Maven wrapper files (optional, usually keep these)
+/.mvn/wrapper/maven-wrapper.jar
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.swp
+
+# Test reports (JUnit, Surefire, etc.)
+/target/surefire-reports/
+/target/failsafe-reports/

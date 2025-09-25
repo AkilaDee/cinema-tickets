@@ -1,5 +1,0 @@
-# Created at 2025-09-25T03:07:41.046
-Boot Manifest-JAR contains absolute paths in classpath 'F:\Ticketing\cinema-tickets\cinema-tickets-java\target\test-classes'
-Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
-'other' has different root
-
