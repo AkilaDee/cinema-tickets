@@ -7,6 +7,8 @@ import uk.gov.dwp.uc.pairtest.exception.InvalidPurchaseException;
 import thirdparty.paymentgateway.TicketPaymentService;
 import thirdparty.seatbooking.SeatReservationService;
 
+import java.util.Arrays;
+
 public class TicketServiceImpl implements TicketService {
 
     private final int CHILD_PRICE = 15;
@@ -46,7 +48,7 @@ public class TicketServiceImpl implements TicketService {
         reservationService.reserveSeat(accountId, seatsToReserve);
     }
 
-    private void validateTickets(int adultCount, int childCount, int infantCount, int totalTickets){
+    void validateTickets(int adultCount, int childCount, int infantCount, int totalTickets){
         if(totalTickets > MAX_TICKETS){
             throw new InvalidPurchaseException("The number of tickets must not exceed 25");
         }
@@ -56,18 +58,14 @@ public class TicketServiceImpl implements TicketService {
         }
     }
 
-    private int calculateTotalPrice(int adultCount, int childCount){
+    int calculateTotalPrice(int adultCount, int childCount){
         return (adultCount * ADULT_PRICE) + (childCount * CHILD_PRICE);
     }
 
-    private int getTicketCount(TicketTypeRequest[] requests, TicketTypeRequest.Type type){
-        int count = 0;
-        for(TicketTypeRequest req : requests){
-            if(req.getTicketType() == type){
-                count += req.getNoOfTickets();
-            }
-        }
-        return count;
+    int getTicketCount(TicketTypeRequest[] requests, TicketTypeRequest.Type type){
+        return Arrays.stream(requests)
+                .filter(req -> req.getTicketType() == type)
+                .mapToInt(TicketTypeRequest::getNoOfTickets)
+                .sum();
     }
-
 }

@@ -59,4 +59,64 @@ class TicketServiceImplTest {
         assertThrows(InvalidPurchaseException.class,
                 () -> ticketService.purchaseTickets(1L));
     }
+
+    @Test
+    void calculateTotalPriceShouldReturnCorrectSum() {
+        int totalPrice = ticketService.calculateTotalPrice(2, 3);
+        assertEquals(2 * 25 + 3 * 15, totalPrice);
+    }
+
+    @Test
+    void calculateTotalPriceWithZeroChildrenOrAdults() {
+        assertEquals(0, ticketService.calculateTotalPrice(0, 0));
+        assertEquals(50, ticketService.calculateTotalPrice(2, 0));
+        assertEquals(30, ticketService.calculateTotalPrice(0, 2));
+    }
+
+    @Test
+    void getTicketCountShouldReturnCorrectCount() {
+        TicketTypeRequest adult1 = new TicketTypeRequest(TicketTypeRequest.Type.ADULT, 2);
+        TicketTypeRequest adult2 = new TicketTypeRequest(TicketTypeRequest.Type.ADULT, 1);
+        TicketTypeRequest child = new TicketTypeRequest(TicketTypeRequest.Type.CHILD, 3);
+
+        TicketTypeRequest[] requests = {adult1, adult2, child};
+
+        int adultCount = ticketService.getTicketCount(requests, TicketTypeRequest.Type.ADULT);
+        int childCount = ticketService.getTicketCount(requests, TicketTypeRequest.Type.CHILD);
+        int infantCount = ticketService.getTicketCount(requests, TicketTypeRequest.Type.INFANT);
+
+        assertEquals(3, adultCount);
+        assertEquals(3, childCount);
+        assertEquals(0, infantCount);
+    }
+
+    @Test
+    void getTicketCountWithEmptyArrayShouldReturnZero() {
+        TicketTypeRequest[] requests = {};
+        int count = ticketService.getTicketCount(requests, TicketTypeRequest.Type.ADULT);
+        assertEquals(0, count);
+    }
+
+    @Test
+    void validateTicketsShouldThrowForTooManyTickets() {
+        InvalidPurchaseException exception = assertThrows(
+                InvalidPurchaseException.class,
+                () -> ticketService.validateTickets(10, 10, 6, 26)
+        );
+        assertEquals("The number of tickets must not exceed 25", exception.getMessage());
+    }
+
+    @Test
+    void validateTicketsShouldThrowForChildOrInfantWithoutAdult() {
+        InvalidPurchaseException exception = assertThrows(
+                InvalidPurchaseException.class,
+                () -> ticketService.validateTickets(0, 1, 1, 2)
+        );
+        assertEquals("Child/Infant tickets can not be purchased without an Adult ticket", exception.getMessage());
+    }
+
+    @Test
+    void validateTicketsShouldPassForValidCombination() {
+        assertDoesNotThrow(() -> ticketService.validateTickets(2, 3, 1, 6));
+    }
 }
