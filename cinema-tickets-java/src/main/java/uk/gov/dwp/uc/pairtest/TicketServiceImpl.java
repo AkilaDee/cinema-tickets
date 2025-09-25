@@ -9,6 +9,10 @@ import thirdparty.seatbooking.SeatReservationService;
 
 public class TicketServiceImpl implements TicketService {
 
+    private final int CHILD_PRICE = 15;
+    private final int ADULT_PRICE = 25;
+    private final int MAX_TICKETS = 25;
+
     private final TicketPaymentService paymentService;
     private final SeatReservationService reservationService;
 
@@ -43,7 +47,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     private void validateTickets(int adultCount, int childCount, int infantCount, int totalTickets){
-        if(totalTickets > 25){
+        if(totalTickets > MAX_TICKETS){
             throw new InvalidPurchaseException("The number of tickets must not exceed 25");
         }
 
@@ -53,7 +57,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     private int calculateTotalPrice(int adultCount, int childCount){
-        return (adultCount * 25) + (childCount * 15);
+        return (adultCount * ADULT_PRICE) + (childCount * CHILD_PRICE);
     }
 
     private int getTicketCount(TicketTypeRequest[] requests, TicketTypeRequest.Type type){
